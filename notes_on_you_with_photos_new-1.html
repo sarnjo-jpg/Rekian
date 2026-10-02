@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>notes on you</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#e7e5df;color:#353634;font-family:Arial,sans-serif}
+.page{min-height:100svh;padding:35px 22px 60px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.mono{font-family:monospace}.tiny{font-size:10px;color:#7b7d77}a{text-decoration:none;color:inherit}
+.home-card{width:min(100%,390px);text-align:center}.polaroid{width:78%;margin:auto;background:#f1f0eb;padding:13px 13px 25px;box-shadow:0 14px 38px #2527241c;transform:rotate(-2deg)}
+.photo,.content-photo{background:#c9c8c2;overflow:hidden}.photo{aspect-ratio:4/5;display:flex;align-items:center;justify-content:center}.photo img,.content-photo img{width:100%;height:100%;object-fit:cover}
+.photo span,.placeholder{font-family:monospace;font-size:11px;color:#62645f;text-align:center;padding:20px}.caption{font-family:monospace;margin-top:13px;font-size:14px}
+.home-title{margin-top:42px;font-family:monospace;font-size:17px}.home-sub{margin-top:10px;font-size:12px;color:#777a74}
+.start{display:inline-flex;margin-top:28px;border:1px solid #656963;padding:11px 17px;border-radius:999px;font-family:monospace;font-size:11px}
+.start:hover{background:#343735;color:#f4f3ee}
+.map-page{justify-content:flex-start;padding-top:60px}.map-title{text-align:center;margin-bottom:38px}.map-title h2{font-family:monospace;font-weight:400;font-size:18px}.map-title p{font-size:11px;color:#96908b;margin-top:8px}
+.map{width:min(100%,410px);height:570px;position:relative}.node{position:absolute;width:112px;min-height:78px;height:92px;background:#f1f0ebee;border:1px solid #c8c7c0;padding:10px;box-shadow:0 7px 20px #50464114;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:.25s}.node:hover{transform:translateY(-3px)}
+.node .num{font-family:monospace;font-size:10px;color:#73766f}.node .icon{font-size:19px;margin:4px 0}.node .label{font-family:monospace;font-size:10px}
+.node.center{width:126px;height:126px;border-radius:50%;left:50%;top:42%;transform:translate(-50%,-50%);display:flex;flex-direction:column;justify-content:center;background:#d2d1ca;border-color:#aaa9a2}.node.center:hover{transform:translate(-50%,-53%)}
+.n1{left:2%;top:4%}.n2{right:2%;top:15%}.n3{left:0;top:52%}.n4{right:0;top:61%}.n5{left:22%;bottom:1%}
+.connections{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}.connections line{stroke:#aaa39d;stroke-width:1.2;opacity:.7}.node{z-index:2}
+.map-note{text-align:center;font-size:10px;color:#99938e}
+.content-page{justify-content:flex-start;padding-top:55px}.back{align-self:flex-start;font-family:monospace;font-size:10px;color:#8c8782;margin-bottom:25px}.content-wrap{width:min(100%,390px)}.content-number{font-family:monospace;font-size:11px;color:#777a74;margin-bottom:13px}.content-photo{width:100%;aspect-ratio:4/5;box-shadow:0 10px 30px #463f3a1f}.quote{font-family:monospace;font-size:16px;line-height:1.65;margin-top:22px}.note{margin-top:12px;font-size:12px;line-height:1.7;color:#62645f}.next{display:inline-block;margin-top:24px;font-family:monospace;font-size:10px;border-bottom:1px solid #96908a;padding-bottom:4px}
+.end{text-align:center}.big-heart{font-size:58px;margin-bottom:20px}.end h2{font-family:monospace;font-weight:400;font-size:20px}.end p{font-size:13px;line-height:1.8;color:#62645f;margin-top:15px}.signature{font-family:monospace;font-size:11px;margin-top:28px;color:#5f5a56}
+.float-heart{position:fixed;pointer-events:none;opacity:.25;animation:up 7s linear infinite}@keyframes up{from{transform:translateY(110vh)}to{transform:translateY(-20vh) rotate(25deg);opacity:0}}
+
+/* --- extra details for the opening page --- */
+.home-card{position:relative}
+.archive-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  width:86%;margin:20px auto 0;
+  font-family:monospace;font-size:9px;color:#777a74;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.archive-meta .dot{font-size:12px;color:#62645f}
+.doodle{
+  position:absolute;font-family:monospace;color:#777a72;
+  font-size:18px;pointer-events:none;opacity:.72;
+}
+.doodle.d1{left:-3px;top:105px;transform:rotate(-14deg)}
+.doodle.d2{right:2px;top:260px;transform:rotate(12deg);font-size:13px}
+.doodle.d3{left:20px;bottom:155px;transform:rotate(-8deg);font-size:11px}
+.side-note{
+  position:absolute;right:-18px;top:390px;
+  writing-mode:vertical-rl;
+  font-family:monospace;font-size:8px;letter-spacing:.18em;
+  color:#85877f;text-transform:uppercase;
+}
+.tape{
+  position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  width:74px;height:20px;background:#bdb8aa99;
+  box-shadow:0 1px 3px #655e5820;
+}
+.archive-line{
+  width:100%;display:flex;align-items:center;gap:10px;
+  margin-top:30px;color:#85877f;font-family:monospace;font-size:9px;
+}
+.archive-line:before,.archive-line:after{
+  content:"";height:1px;background:#d2ccc6;flex:1;
+}
+.tiny-stamp{
+  display:inline-block;margin-top:17px;
+  border:1px solid #85887f;padding:5px 8px;
+  font-family:monospace;font-size:8px;letter-spacing:.08em;
+  transform:rotate(-3deg);color:#656861;
+}
+
+
+/* masculine editorial palette */
+:root{
+  --ink:#343735;
+  --muted:#777a74;
+  --paper:#f1f0eb;
+  --line:#c5c6bf;
+  --olive:#5e6659;
+  --olive-soft:#858b7e;
+}
+body{letter-spacing:.005em}
+.home-title,.quote,.caption,.mono,.node .label,.content-number,.back,.next{
+  color:var(--ink);
+}
+.archive-meta span:last-child{color:var(--olive)}
+.tiny-stamp{
+  border-color:var(--olive-soft)!important;
+  color:var(--olive)!important;
+}
+.start{
+  border-color:var(--olive)!important;
+}
+.start:hover{
+  background:var(--ink)!important;
+  color:#f4f3ee!important;
+}
+.node.center{
+  background:#d2d3cc!important;
+}
+.node.center .label{
+  letter-spacing:.12em;
+}
+.node .icon{
+  color:var(--olive);
+}
+.line{
+  background:#9da098!important;
+}
+.content-photo{
+  border:1px solid #d0d0ca;
+}
+.polaroid{
+  border:1px solid #deddd6;
+}
+.side-note{
+  color:#7c8178!important;
+}
+.home-sub,.note{
+  color:#6f726c!important;
+}
+.end .big-heart{
+  color:var(--olive);
+}
+
+</style>
+</head>
+<body>
+
+<section class="page" id="home">
+<div class="home-card">
+
+  
+  
+  
+  <div class="side-note">PRIVATE ARCHIVE · VOL. 01</div>
+
+  <div class="polaroid">
+    <div class="tape"></div>
+    <div class="photo">
+      <img src="https://i.ibb.co/DNFBC2s/2917b5580605fa8d7f586add6d01a802.jpg" alt="foto dia"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span style="display:none">MASUKKAN FOTO DIA DI SINI<br><br>online image</span>
+    </div>
+    <div class="caption">notes on you</div>
+  </div>
+
+  <div class="archive-meta">
+    <span>entry no. 001</span>
+    <span class="dot">•</span>
+    <span>for your eyes only</span>
+  </div>
+
+  <div class="archive-line">a small collection of very serious thoughts</div>
+
+  <div class="home-title">a very unnecessary archive<br>of my feelings for you.</div>
+  <div class="home-sub">made with affection, poor judgment, and too much thought.</div>
+
+  <div class="tiny-stamp">PERSONAL ARCHIVE · 001</div><br>
+  <a class="start" href="#map">open the archive →</a>
+</div></section>
+
+<section class="page map-page" id="map">
+<div class="map-title"><h2>things i think about when i think of you</h2><p>apparently, there are quite a lot.</p></div>
+<div class="map">
+<a class="node n1" href="#one"><div class="num">(01)</div><div class="label">i love you</div></a>
+<a class="node n2" href="#two"><div class="num">(02)</div><div class="label">i adore you</div></a>
+<a class="node n3" href="#three"><div class="num">(03)</div><div class="label">you calm me</div></a>
+<a class="node n4" href="#four"><div class="num">(04)</div><div class="label">i cherish you</div></a>
+<a class="node n5" href="#five"><div class="num">(05)</div><div class="label">i choose you</div></a>
+<div class="node center"><div class="label">YOU</div><div class="tiny">the common denominator</div></div>
+<svg class="connections" viewBox="0 0 410 570" preserveAspectRatio="none" aria-hidden="true">
+<line x1="205" y1="239" x2="59" y2="52" />
+<line x1="205" y1="239" x2="351" y2="115" />
+<line x1="205" y1="239" x2="56" y2="296" />
+<line x1="205" y1="239" x2="354" y2="347" />
+<line x1="205" y1="239" x2="170" y2="527" />
+</svg>
+</div><div class="map-note mono">tap a thought.</div>
+</section>
+
+<script>
+const items=[
+["one","i love you","https://i.ibb.co/sp4txZNS/559063ee1616d65cc7c068ca4faa8942.jpg","i love the way you exist in my life.","Bukan cuma karena kamu pacarku. Aku suka versi diriku yang muncul ketika aku bersamamu. Lebih tenang, lebih lembut, dan entah kenapa lebih gampang kangen."],
+["two","i adore you","https://i.ibb.co/qZ9cp0K/7b64817263ffeb1c4873d3b1bf99b0d0.jpg","you make ordinary things feel worth remembering.","Ada hal-hal kecil tentangmu yang mungkin kamu anggap biasa. Aku justru sering menyimpannya diam-diam di kepala. Sederhana, tapi selalu punya tempat tersendiri buatku."],
+["three","you calm me","https://i.ibb.co/8pBp693/d24be663a346397fa6183c0651d88e13.jpg","somehow, you feel like home.","Bukan berarti semuanya selalu sempurna. Justru karena kamu tetap kamu, dengan segala anehnya, aku bisa merasa aman di dekatmu."],
+["four","i cherish you","https://i.ibb.co/HL6CMr4v/a9976887a6e171f2e73b69d59d96b654.jpg","i hope you know how precious you are to me.","Aku mungkin nggak selalu bilang. Kadang malah sok cool. Tapi kamu penting. Sangat."],
+["five","i choose you","https://i.ibb.co/hxYsCXhc/d0befcdcad3d689472a8ab79e483f368.jpg","out of everyone, in every version of this life, i'd still choose you.","Ini bagian paling bucin. Mohon maklum, website ini dibuat oleh orang yang sedang jatuh cinta dan kehilangan objektivitas."]
+];
+items.forEach((x,i)=>{
+document.write(`<section class="page content-page" id="${x[0]}"><div class="content-wrap">
+<a class="back" href="#map">← back to the map</a>
+<div class="content-number">(0${i+1}) / ${x[1]}</div>
+<div class="content-photo"><img src="${x[2]}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="placeholder" style="display:none">MASUKKAN FOTO ${i+1}<br>${x[2]}</div></div>
+<div class="quote">“${x[3]}”</div><div class="note">${x[4]}</div>
+<a class="next" href="${i<4?"#"+items[i+1][0]:"#end"}">${i<4?"next thought →":"one last thing →"}</a>
+</div></section>`);
+});
+</script>
+
+<section class="page end" id="end"><h2>and that's what i write about you.</h2><p>maybe i could've written more.<br>but then this little website would never end.</p><div class="signature">— yours, always.</div><a class="start" href="#home">read it again</a></section>
+
+
+</body></html>
